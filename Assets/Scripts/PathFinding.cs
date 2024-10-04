@@ -10,10 +10,10 @@ public class PathFinding : MonoBehaviour
     public Transform seeker;
     public Transform target;
 
-    Grid grid;
+    public Grid usedGrid;
     private void Awake()
     {
-        grid = GetComponent<Grid>();
+        usedGrid = GetComponent<Grid>();
     }
 
     private void Update()
@@ -23,8 +23,8 @@ public class PathFinding : MonoBehaviour
 
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        Node startNode = grid.NodeFromWorldPoint(startPos);
-        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+        Node startNode = usedGrid.NodeFromWorldPoint(startPos);
+        Node targetNode = usedGrid.NodeFromWorldPoint(targetPos);
         
         // we use the openSet list to search for nodes that are yet to be explored
         List<Node> openSet = new List<Node>();
@@ -57,7 +57,7 @@ public class PathFinding : MonoBehaviour
             }
 
             
-            foreach (Node neighbour in grid.GetNeighbours(currentNode))
+            foreach (Node neighbour in usedGrid.GetNeighbours(currentNode))
             {
                 if(!neighbour.walkable || closedSet.Contains(neighbour))
                 {
@@ -93,7 +93,7 @@ public class PathFinding : MonoBehaviour
         // The path is traced from end to beginning, so the array is reversed
         path.Reverse();
 
-        grid.path = path;
+        usedGrid.path = path;
     }
 
     // In A* 2d the distance formula is based on the module of the vectors (0, 10) and (10, 0) which have module 10. 
